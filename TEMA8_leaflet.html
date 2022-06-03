@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- La hoja de estilos que vamos a cargar: -->
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" 
+	integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+	crossorigin=""/>
+
+	<!-- La libreria javascript que vamos a utilizar , **** asegurate siempre de poner antes la hoja de estilos*** -->
+	<script type="" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" 
+	integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" 
+	crossorigin=""></script>
+
+	<script type="text/javascript" src="zarautz.js"> </script>
+
+	<style>
+		#zona_reservada_map {
+			width: 100%;
+			height: 600px;
+			box-shadow: 5px 5px 5px #777;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1> Edificios históricos de Zarautz</h1>
+
+	<div id="zona_reservada_map"></div>
+	<script>
+	// Vamos a cargar una capa base de open street map, lo haremos como un tile layer.Para ello habrá que definirle la URL, el texto con la atribución y el máximo nivel de zoom de la capa.
+
+		var capaBASE = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'+'contributors',
+			maxZoom: 25,
+		});
+
+	var mapa = L.map('zona_reservada_map', {
+		center: [43.277159,-2.171668], // Primero latitud y luego longitud
+		zoom: 13,
+		layers: [capaBASE]
+	});
+
+    var mapabase={"OpenStreetMap":capaBASE
+	};
+
+	L.control.scale().addTo(mapa);
+	L.control.layers(mapabase,null,{collapsed:false}).addTo(mapa);
+
+	var estilo_poligono = {
+		color: 'orange',
+		fillColor: 'white',
+		weight: 2,
+		fillOpacity: 0.25,
+	};
+	
+	L.geoJSON(limites_zarautz, {style:estilo_poligono}).addTo(mapa);
+	
+	var capa_municipio=L.geoJSON(limites_zarautz, {style: estilo_poligono});
+	
+	var mapabase={"OpenStreetMap":capaBASE
+	};
+
+	var superpuestos={
+		"Municipio": capa_municipio,
+	};
+	
+	var marcador=L.marker(
+		[43.285316,-2.175163], {
+		//draggable:true,
+		title: "Pinche aquí"}).addTo(mapa)
+		.bindPopup("<h2> Casa Portu-Ayuntamiento de Zarautz </h2> <h3> El ayuntamiento antaño se llamaba Casa Portu, un palacio construído en el siglo XVI. </h3> <img src='./imagenes/udaletxeaa.jpg'/>")
+
+	var marcador=L.marker(
+		[43.286070,-2.183214], {
+		//draggable:true,
+		title: "Pinche aquí"}).addTo(mapa)
+		.bindPopup("<h2> Torreón de Vista Alegre </h2> <h3> El torreón se construyó en 1913 para el ocio de los zarauztarras. Desde su balcón se ve todo el pueblo. </h3> <img src='./imagenes/torreon.jpg'/>")
+	
+	var marcador=L.marker(
+		[43.287087,-2.177376], {
+		//draggable:true,
+		title: "Pinche aquí"}).addTo(mapa)
+		.bindPopup("<h2> Palacio de Narros - Narros Jauregia </h2> <h3> Este palacio se construyó en 1536. Cuenta la leyenda que el único naufrago que sobrevivió en el barco alemán Gustav lo encerraron en la sala azul de este palacio y murió allí. A día de hoy se le conoce como el fantasma de la sala azul. </h3> <h4> Si sigues la playa encontrarás el barco </h4>  <img src='./imagenes/narros.jpg'/>")
+
+	var marcador=L.marker(
+		[43.290278,-2.155075], {
+		//draggable:true,
+		title: "Gustav"}).addTo(mapa)
+		.bindPopup("<h2>¡SORPRESA! Has encontrado el barco!</h2> <h3> El barco alemán Gustav varó en el año 1874.</h3> <img src='./imagenes/gustav.jpg'/>")
+
+	var marcador=L.marker(
+		[43.285897,-2.175017], {
+		//draggable:true,
+		title: "Gustav"}).addTo(mapa)
+		.bindPopup("<h2>Torre Luzea</h2> <h3> Este edificio se construyó en el siglo XV.</h3> <img src='./imagenes/torreluzeaa.jpg'/>")
+	
+	var marcador=L.marker(
+		[43.284321,-2.171220], {
+		//draggable:true,
+		title: "Pinche aquí"}).addTo(mapa)
+		.bindPopup("<h2>Estación de tren</h2> <h3> La estación de tren se construyo en 1901.</h3> <img src='./imagenes/tren.jpg'/>")
+
+	var marcador=L.marker(
+		[43.285871,-2.169231], {
+		//draggable:true,
+		title: "Pinche aquí"}).addTo(mapa)
+		.bindPopup("<h2> Palacete de Sanz Enea</h2> <h3> Se contruyó en el siglo XIX y a día de hoy es la biblioteca municipal.</h3> <img src='./imagenes/sanz.jpg'/>")
+
+	var marcador=L.marker(
+		[43.287366,-2.173607], {
+		//draggable:true,
+		title: "Prueba aquí"}).addTo(mapa)
+		.bindPopup("<h2> Solo acabas de empezar, sigue andando! </h2>")
+
+	var marcador=L.marker(
+		[43.288562,-2.163746], {
+		//draggable:true,
+		title: "Prueba aquí"}).addTo(mapa)
+		.bindPopup("<h2> Aquí en frente esta el famoso restaurante de Arguiñano, pero no nos interesa... Falta poco! </h2>")
+
+	var lee_coordenadas = L.popup();
+	function alclicar(punto_a_leer) {
+		lee_coordenadas
+		.setLatLng(punto_a_leer.latlng) // Recoge los valores.
+		.setContent("Has pinchado el punto de coordenadas:<br> " + punto_a_leer.latlng.lat.toString() + "," + punto_a_leer.latlng.lng.toString()).openOn(mapa); // Añade el popup al mapa
+	}
+	
+	mapa.on('click', alclicar);
+	
+	</script>
+
+</body>
+</html>
